@@ -1,0 +1,3 @@
+[submodule "lib/CurveLibrary"]
+	path = lib/CurveLibrary
+	url = git@github.com:FogozIV/CurveLibrary.git
