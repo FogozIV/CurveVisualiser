@@ -13,26 +13,33 @@
 #include "Visualizer.h"
 #include "curves/BezierCurve.h"
 #include "curves/ClothoidCurve.h"
+#include "curves/CurveList.h"
 #include "utils/G2Solve3Arc.h"
 #include "utils/Position.h"
 
 namespace plt = matplotlibcpp;
 int main() {
     Position start(0.0, 0.0, Angle::fromDegrees(0), 0);
-    Position end(55, 100, Angle::fromDegrees(180), 0);
-    Position end2(-200, 450, Angle::fromDegrees(180), 0.02);
+    Position end(1000, 200, Angle::fromDegrees(90), 0);
+    Position end2(1200, 800, Angle::fromDegrees(0), 0.02);
     Position end3(1000, 450, Angle::fromDegrees(180), 0);
     Position end4(1200, 800, Angle::fromDegrees(180), 0);
     G2Solve3Arc arc;
     std::chrono::steady_clock::time_point start_time = std::chrono::steady_clock::now();
-    int sum = arc.build(start, end);
-    sum += arc.build(end, end2);
-    sum += arc.build(end3, end2);
-    sum += arc.build(end3, end4);
+    auto curveList = std::make_shared<CurveList>();
+    int sum = 0;
+    arc.build(start, end);
+    curveList->addCurve(arc.getSegment0Curve());
+    curveList->addCurve(arc.getSegmentMiddleCurve());
+    curveList->addCurve(arc.getSegment1Curve());
+    arc.build(end, end2);
+    curveList->addCurveList(arc.getCurveList());
     std::chrono::steady_clock::time_point end_time = std::chrono::steady_clock::now();
     std::chrono::duration<double> elapsed_seconds = end_time - start_time;
     std::cout << "Time elapsed: " << elapsed_seconds.count() << "s" << std::endl;
     std::cout << sum << std::endl;
+    CurveVisualizer::plotCurveMM(curveList, 10);
+
 
 
 
