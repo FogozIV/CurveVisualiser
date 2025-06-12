@@ -20,7 +20,7 @@
 namespace plt = matplotlibcpp;
 int main() {
     Position start(0.0, 0.0, Angle::fromDegrees(0), 0);
-    Position end(1000, 200, Angle::fromDegrees(90), 0);
+    Position end(1000, 100, Angle::fromDegrees(90), 0);
     Position end2(1200, 800, Angle::fromDegrees(0), 0.02);
     Position end3(1000, 450, Angle::fromDegrees(180), 0);
     Position end4(1200, 800, Angle::fromDegrees(180), 0);
@@ -32,6 +32,7 @@ int main() {
     curveList->addCurve(arc.getSegment0Curve());
     curveList->addCurve(arc.getSegmentMiddleCurve());
     curveList->addCurve(arc.getSegment1Curve());
+    /*
     arc.build(end, end2);
     curveList->addCurveList(arc.getCurveList());
     std::chrono::steady_clock::time_point end_time = std::chrono::steady_clock::now();
@@ -64,6 +65,7 @@ int main() {
 
     CurveVisualizer::plotCurve(curves, 100, true);
     CurveVisualizer::plotCurvatureEvolution(curves, 100, true);
-
+    */
+    CurveVisualizer::plotCurve(curveList, 1000, true);
     return 0;
 }
