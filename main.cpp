@@ -20,18 +20,26 @@
 namespace plt = matplotlibcpp;
 int main() {
     Position start(0.0, 0.0, Angle::fromDegrees(0), 0);
-    Position end(1000, 100, Angle::fromDegrees(90), 0);
-    Position end2(1200, 800, Angle::fromDegrees(0), 0.02);
-    Position end3(1000, 450, Angle::fromDegrees(180), 0);
-    Position end4(1200, 800, Angle::fromDegrees(180), 0);
+    Position end(2000, -400, Angle::fromDegrees(45), 0);
+    Position end2(2400, 800, Angle::fromDegrees(180), 0);
+    Position end3(1600, 800, Angle::fromDegrees(225), 0);
+    Position end4(800, 0, Angle::fromDegrees(180), 0);
+    Position end5(0,0, Angle::fromDegrees(180), 0);
     G2Solve3Arc arc;
     std::chrono::steady_clock::time_point start_time = std::chrono::steady_clock::now();
     auto curveList = std::make_shared<CurveList>();
     int sum = 0;
     arc.build(start, end);
-    curveList->addCurve(arc.getSegment0Curve());
-    curveList->addCurve(arc.getSegmentMiddleCurve());
-    curveList->addCurve(arc.getSegment1Curve());
+    curveList->addCurveList(arc.getCurveList());
+    arc.build(end, end2);
+    curveList->addCurveList(arc.getCurveList());
+    arc.build(end2, end3);
+    curveList->addCurveList(arc.getCurveList());
+    arc.build(end3, end4);
+    curveList->addCurveList(arc.getCurveList());
+    arc.build(end4, end5);
+    curveList->addCurveList(arc.getCurveList());
+
     /*
     arc.build(end, end2);
     curveList->addCurveList(arc.getCurveList());
