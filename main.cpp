@@ -19,6 +19,7 @@
 
 namespace plt = matplotlibcpp;
 int main() {
+
     Position start(0.0, 0.0, Angle::fromDegrees(0), 0);
     Position end(2000, -400, Angle::fromDegrees(45), 0);
     Position end2(2400, 800, Angle::fromDegrees(180), 0);
@@ -39,7 +40,7 @@ int main() {
     curveList->addCurveList(arc.getCurveList());
     arc.build(end4, end5);
     curveList->addCurveList(arc.getCurveList());
-
+    std::cout << "Curve count " << curveList->getCurveCount() << std::endl;
     /*
     arc.build(end, end2);
     curveList->addCurveList(arc.getCurveList());
