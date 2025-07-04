@@ -19,7 +19,6 @@
 
 namespace plt = matplotlibcpp;
 int main() {
-
     Position start(0.0, 0.0, Angle::fromDegrees(0), 0);
     Position end(2000, -400, Angle::fromDegrees(45), 0);
     Position end2(2400, 800, Angle::fromDegrees(180), 0);
@@ -29,7 +28,6 @@ int main() {
     G2Solve3Arc arc;
     std::chrono::steady_clock::time_point start_time = std::chrono::steady_clock::now();
     auto curveList = std::make_shared<CurveList>();
-    int sum = 0;
     arc.build(start, end);
     curveList->addCurveList(arc.getCurveList());
     arc.build(end, end2);
@@ -40,6 +38,10 @@ int main() {
     curveList->addCurveList(arc.getCurveList());
     arc.build(end4, end5);
     curveList->addCurveList(arc.getCurveList());
+    std::chrono::steady_clock::time_point end_time = std::chrono::steady_clock::now();
+    std::chrono::duration<double> elapsed_seconds = end_time - start_time;
+    std::cout << "Time elapsed: " << elapsed_seconds.count() << "s" << std::endl;
+
     std::cout << "Curve count " << curveList->getCurveCount() << std::endl;
     /*
     arc.build(end, end2);
