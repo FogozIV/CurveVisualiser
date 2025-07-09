@@ -10,7 +10,7 @@ namespace plt = matplotlibcpp;
 
 class CurveVisualizer {
 public:
-    static void plotCurve(std::shared_ptr<BaseCurve> curve, int samples = 100, bool block=false) {
+    static void plotCurve(std::shared_ptr<BaseCurve> curve, int samples = 100, bool block=false, std::vector<Position> waypoints={}) {
         std::vector<Position> positions;
         positions.reserve(samples);
         Position start = curve->getPosition(0);
@@ -45,6 +45,10 @@ public:
         */
         drawTangent(start, 10, "g");
         drawTangent(end, 10, "r");
+
+        for(auto p : waypoints){
+            plt::plot({p.getX()}, {p.getY()}, "o");
+        }
         
         plt::title("Clothoid Curve");
         plt::xlabel("X position");

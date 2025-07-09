@@ -25,23 +25,14 @@ int main() {
     Position end3(1600, 800, Angle::fromDegrees(225), 0);
     Position end4(800, 0, Angle::fromDegrees(180), 0);
     Position end5(0,0, Angle::fromDegrees(180), 0);
+    std::vector<Position> poses = {start, end, end2, end3, end4, end5};
     G2Solve3Arc arc;
     std::chrono::steady_clock::time_point start_time = std::chrono::steady_clock::now();
     auto curveList = std::make_shared<CurveList>();
-    arc.build(start, end);
-    curveList->addCurveList(arc.getCurveList());
-    arc.build(end, end2);
-    curveList->addCurveList(arc.getCurveList());
-    arc.build(end2, end3);
-    curveList->addCurveList(arc.getCurveList());
-    arc.build(end3, end4);
-    curveList->addCurveList(arc.getCurveList());
-    arc.build(end4, end5);
-    curveList->addCurveList(arc.getCurveList());
-    std::chrono::steady_clock::time_point end_time = std::chrono::steady_clock::now();
-    std::chrono::duration<double> elapsed_seconds = end_time - start_time;
-    std::cout << "Time elapsed: " << elapsed_seconds.count() << "s" << std::endl;
-
+    for(int i = 0; i < poses.size() - 1; i++){
+        arc.build(poses[i], poses[i+1]);
+        curveList->addCurveList(arc.getCurveList());
+    }
     std::cout << "Curve count " << curveList->getCurveCount() << std::endl;
     /*
     arc.build(end, end2);
@@ -77,6 +68,6 @@ int main() {
     CurveVisualizer::plotCurve(curves, 100, true);
     CurveVisualizer::plotCurvatureEvolution(curves, 100, true);
     */
-    CurveVisualizer::plotCurve(curveList, 1000, true);
+    CurveVisualizer::plotCurve(curveList, 1000, true, poses);
     return 0;
 }
