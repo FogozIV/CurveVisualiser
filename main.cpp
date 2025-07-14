@@ -34,6 +34,13 @@ int main() {
         curveList->addCurveList(arc.getCurveList());
     }
     std::cout << "Curve count " << curveList->getCurveCount() << std::endl;
+
+
+    curveList = std::make_shared<CurveList>();
+    poses.clear();
+    curveList->addCurve(ClothoidCurve::getClothoidCurveDelta(Position{}, Angle::fromDegrees(90), 0, 100));//std::make_shared<ClothoidCurve>(Position{}, 0, 0.0001, 100));
+
+
     /*
     arc.build(end, end2);
     curveList->addCurveList(arc.getCurveList());
