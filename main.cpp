@@ -16,6 +16,7 @@
 #include "curves/CurveList.h"
 #include "utils/G2Solve3Arc.h"
 #include "utils/Position.h"
+#include "curves/HermiteSplineCurve.h"
 
 namespace plt = matplotlibcpp;
 int main() {
@@ -27,19 +28,29 @@ int main() {
     Position end5(0,0, Angle::fromDegrees(180), 0);
     std::vector<Position> poses = {start, end, end2, end3, end4, end5};
     G2Solve3Arc arc;
+
     std::chrono::steady_clock::time_point start_time = std::chrono::steady_clock::now();
     auto curveList = std::make_shared<CurveList>();
+    auto curveList2 = std::make_shared<CurveList>();
     for(int i = 0; i < poses.size() - 1; i++){
+        auto qhs = QuinticHermiteSpline::create(poses[i], poses[i+1], (poses[i+1] - poses[i]).norm());
+        curveList->addCurve(qhs);
         arc.build(poses[i], poses[i+1]);
-        curveList->addCurveList(arc.getCurveList());
+        curveList2->addCurveList(arc.getCurveList());
+        std::cout << qhs << std::endl;
     }
+    //curveList->addCurve(ClothoidCurve::getClothoidCurveG0(start, end.getX(), end.getY()));
     std::cout << "Curve count " << curveList->getCurveCount() << std::endl;
+    std::cout << "Curve count " << curveList2->getCurveCount() << std::endl;
+    auto vect = curveList->getFullCurve();
+    auto curveList3 = CurveFactory::getBaseCurve(vect);
+    CurveVisualizer::plotCurve(curveList3, 1000, true);
 
-
+    /*
     curveList = std::make_shared<CurveList>();
     poses.clear();
     curveList->addCurve(ClothoidCurve::getClothoidCurveDelta(Position{}, Angle::fromDegrees(90), 0, 100));//std::make_shared<ClothoidCurve>(Position{}, 0, 0.0001, 100));
-
+    */
 
     /*
     arc.build(end, end2);
@@ -75,6 +86,10 @@ int main() {
     CurveVisualizer::plotCurve(curves, 100, true);
     CurveVisualizer::plotCurvatureEvolution(curves, 100, true);
     */
-    CurveVisualizer::plotCurve(curveList, 1000, true, poses);
+    CurveVisualizer::plotCurve(curveList, 1000, true, poses, true, false);
+    CurveVisualizer::plotCurve(curveList2, 1000, true, poses, false);
+    CurveVisualizer::plotCurvatureEvolution(curveList);
+    CurveVisualizer::plotCurvatureEvolution(curveList2);
+
     return 0;
 }
